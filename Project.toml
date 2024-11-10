@@ -1,0 +1,12 @@
+name = "RungeKutta"
+uuid = "38ab4db4-9048-4259-bc26-fcb5e4727ed4"
+authors = ["Juraj Lieskovský <lieskovsky.juraj@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Parameters = "d96e819e-fc66-5662-9728-84c9c7592b0a"
+
+[compat]
+LinearAlgebra = "1.11.0"
+Parameters = "0.12.3"
