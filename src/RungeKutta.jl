@@ -52,6 +52,37 @@ function f!(xnew, method::ExplicitMethod, dyn!, x, u, h)
     return nothing
 end
 
+function f(method::ExplicitMethod, dyn!, x, u, h)
+    # unpacked parameters of method
+    @unpack s, a, b, c = method
+
+    # promoted type
+    S = promote_type(eltype(x), eltype(u), eltype(h))
+
+    # vector for temporarly holding intermediate steps
+    ξ = Vector{S}(undef, length(x))
+
+    # vector and matrix for storing stages
+    k = Matrix{S}(undef, length(x), s)
+
+    @views begin
+        # first stage
+        dyn!(k[:, 1], x, u)
+
+        # remaining stages
+        for j in 2:s
+            ξ .= x
+            mul!(ξ, k[:, 1:j-1], a[j, 1:j-1], h, 1)
+            dyn!(k[:, j], ξ, u)
+        end
+    end
+
+    # new state
+    xnew = x
+    mul!(xnew, k, b, h, 1)
+    return xnew
+end
+
 # Methods with coefficients
 
 function RK4()
