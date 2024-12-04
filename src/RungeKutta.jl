@@ -78,7 +78,7 @@ function f(method::ExplicitMethod, dyn!, x, u, h)
     end
 
     # new state
-    xnew = x
+    xnew = copy(x)
     mul!(xnew, k, b, h, 1)
     return xnew
 end
